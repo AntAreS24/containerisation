@@ -1,0 +1,69 @@
+{
+	"kind": "ReplicationController",
+	"apiVersion": "v1",
+	"metadata": {
+		"name": "tibco-be-rc",
+		"labels": {
+			"tier": "backend",
+			"name": "tibco-be"
+		}
+	},
+	"spec": {
+		"replicas": 3,
+		"selector": {
+			"tier": "backend",
+			"app": "tibco-be-pod"
+		},
+		"template": {
+			"metadata": {
+				"labels": {
+					"tier": "backend",
+					"app": "tibco-be-pod"
+				}
+			},
+			"spec": {
+				"containers": [
+				{
+					"name": "k8be",
+					"image": "ddr.tibco.com:5000/businessevents",
+					"env": [
+					{
+						"name": "BE_ENGINE_EAR_1",
+						"value": "/data/be/sample.ear"
+					},
+					{
+						"name": "BE_ENGINE_CDD_1",
+						"value": "/data/be/sample.cdd"
+					},
+					{
+						"name": "BE_ENGINE_UNIT_1",
+						"value": "sample-inf"
+					},
+					{
+						"name": "BE_ENGINE_TRA_1",
+						"value": "/opt/tibco/be/5.2/bin/be-engine.tra"
+					},
+					{
+						"name": "BE_ENGINE_JMX_1",
+						"value": "9990"
+					}
+					],
+					"ports": [
+					{
+						"containerPort": 7000
+					}
+					]
+				}
+				],
+				"volumes": [
+				{
+					"hostPath": {
+						"path": "/home/core/be"
+					},
+					"name": "beconfig"
+				}
+				]
+			}
+		}
+	}	
+}

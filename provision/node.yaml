@@ -1,0 +1,102 @@
+#cloud-config
+
+---
+write-files:
+  - path: /etc/conf.d/nfs
+    permissions: '0644'
+    content: |
+      OPTS_RPC_MOUNTD=""
+  - path: /opt/bin/wupiao
+    permissions: '0755'
+    content: |
+      #!/bin/bash
+      # [w]ait [u]ntil [p]ort [i]s [a]ctually [o]pen
+      [ -n "$1" ] && \
+        until curl -o /dev/null -sIf http://${1}; do \
+          sleep 1 && echo .;
+        done;
+      exit $?
+
+coreos:
+  units:
+    - name: rpcbind.service
+      enable: true
+      command: start
+    - name: rpc-statd.service
+      enable: true
+      command: start
+    - name: docker.service
+      command: start
+    - __PROXY_LINE__name: http-proxy.conf
+      __PROXY_LINE__content: |
+        __PROXY_LINE__[Service]
+        __PROXY_LINE__EnvironmentFile=/etc/environment
+    - name: early-docker.service
+      drop-ins:
+        - __PROXY_LINE__name: http-proxy.conf
+          __PROXY_LINE__content: |
+            __PROXY_LINE__[Service]
+            __PROXY_LINE__EnvironmentFile=/etc/environment
+    - name: kube-install.service
+      command: start
+      content: |
+        [Unit]
+        Description=Download/Install Kubernetes
+        Requires=network-online.target
+        After=network-online.target
+        ConditionPathExists=!/opt/bin/kube-proxy
+        ConditionPathExists=!/opt/bin/kubelet
+        [Service]
+        Type=oneshot
+        EnvironmentFile=/etc/environment
+        ExecStart=-/usr/bin/mkdir -p /opt/bin
+        ExecStart=/usr/bin/wget -P /opt/bin https://storage.googleapis.com/kubernetes-release/release/__RELEASE__/bin/linux/amd64/kube-proxy
+        ExecStart=/usr/bin/wget -P /opt/bin https://storage.googleapis.com/kubernetes-release/release/__RELEASE__/bin/linux/amd64/kubelet
+        ExecStart=/usr/bin/chmod +x /opt/bin/kube-proxy
+        ExecStart=/usr/bin/chmod +x /opt/bin/kubelet
+    - name: kube-proxy.service
+      command: start
+      content: |
+        [Unit]
+        Description=Kubernetes Proxy
+        Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+        Requires=kube-install.service
+        After=kube-install.service
+        [Service]
+        ExecStartPre=/opt/bin/wupiao __MASTER_IP__:8080
+        ExecStart=/opt/bin/kube-proxy \
+          --master=__MASTER_IP__:8080 \
+          --logtostderr=true
+        Restart=always
+        RestartSec=10
+    - name: kube-kubelet.service
+      command: start
+      content: |
+        [Unit]
+        Description=Kubernetes Kubelet
+        Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+        Requires=kube-install.service
+        After=kube-install.service
+        [Service]
+        ExecStartPre=/usr/bin/mkdir -p /opt/kubernetes/manifests/
+        ExecStartPre=/opt/bin/wupiao __MASTER_IP__:8080
+        ExecStart=/opt/bin/kubelet \
+          --address=0.0.0.0 \
+          --port=10250 \
+          --hostname_override=$public_ipv4 \
+          --api_servers=__MASTER_IP__:8080 \
+          --cloud_provider=__CLOUDPROVIDER__ \
+          --allow_privileged=true \
+          --cluster_dns=10.100.0.10 \
+          --cluster_domain=__DNS_DOMAIN__ \
+          --logtostderr=true \
+          --config=/opt/kubernetes/manifests/ \
+          --cadvisor_port=4194 \
+          --healthz_bind_address=0.0.0.0 \
+          --healthz_port=10248
+        Restart=always
+        RestartSec=10
+        WorkingDirectory=/root/
+  update:
+    group: __CHANNEL__
+    reboot-strategy: off

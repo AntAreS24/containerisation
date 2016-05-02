@@ -1,0 +1,33 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+   name: tibco-be-pod
+   labels:
+      app: tibco-be-pod
+      tier: backend
+spec:
+   containers:
+      - name: k8be
+        image: ddr.tibco.com:5000/businessevents
+        env:
+           - name: BE_ENGINE_EAR_1
+             value: /home/core/be/sample.ear
+           - name: BE_ENGINE_CDD_1
+             value: /home/core/be/sample.cdd
+           - name: BE_ENGINE_UNIT_1
+             value: sample-inf
+           - name: BE_ENGINE_TRA_1
+             value: /home/core/be/be-engine.tra
+           - name: BE_ENGINE_JMX_1
+             value: "9990"
+        volumeMounts:
+        - mountPath: /data/be
+          name: beconfig
+        ports:
+        - hostPort: 7000
+          containerPort: 7000
+   volumes:
+   - name: beconfig
+     hostPath:
+        path: /home/core/be
