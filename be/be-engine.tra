@@ -10,10 +10,10 @@
 #==========================================================
 #
 
-tibco.env.PSP=;
-tibco.env.TIB_HOME=c:/tibco/be_home
-tibco.env.BE_HOME=c:/tibco/be_home/be/5.2
-tibco.env.AS_HOME=c:/tibco/be_home/as/2.1
+tibco.env.PSP=:
+tibco.env.TIB_HOME=/opt/tibco
+tibco.env.BE_HOME=%TIB_HOME%/be/5.2
+tibco.env.AS_HOME=%TIB_HOME%/as/2.1
 tibco.env.RV_HOME=
 tibco.env.EMS_HOME=
 tibco.env.HAWK_HOME=
@@ -41,7 +41,7 @@ tibco.env.CUSTOM_EXT_APPEND_CP=
 # JVM related settings. Choose your options carefully.
 #==========================================================
 
-tibco.env.TIB_JAVA_HOME=c:/tibco/be_home/tibcojre64/1.7.0
+tibco.env.TIB_JAVA_HOME=%TIB_HOME%/tibcojre64/1.7.0
 #
 # Ensure that the JVM_LIB_PATH points to the appropriate JVM Server DLL or SO.
 #
@@ -56,8 +56,8 @@ tibco.env.TIB_JAVA_HOME=c:/tibco/be_home/tibcojre64/1.7.0
 #    %TIB_JAVA_HOME%/lib/i386/server/libjvm.dll
 #
 #
-tibco.env.JVM_LIB_PATH=c:/tibco/be_home/tibcojre64/1.7.0/bin/server/jvm.dll
-tibco.env.JVM_LIB_DIR=c:/tibco/be_home/tibcojre64/1.7.0/bin/server
+tibco.env.JVM_LIB_PATH=%TIB_JAVA_HOME%/lib/amd64/server/libjvm.so
+tibco.env.JVM_LIB_DIR=%TIB_JAVA_HOME%/lib/amd64
 
 #
 # 32 bit JVM parameters for production. Increase heap size and tune other
@@ -68,7 +68,7 @@ tibco.env.JVM_LIB_DIR=c:/tibco/be_home/tibcojre64/1.7.0/bin/server
 #           -XX:+CMSIncrementalMode -XX:+CMSIncrementalPacing -XX:+UseCMSCompactAtFullCollection -XX:CMSFullGCsBeforeCompaction=2
 #           -XX:+DisableExplicitGC -XX:+UseTLAB -XX:+UseSpinning -XX:+UseFastAccessorMethods
 #
-java.extended.properties=-server -Xms1024m -Xmx1024m -javaagent:%BE_HOME%/lib/cep-base.jar -XX:MaxPermSize=256m -XX:+UseParNewGC -XX:+UseConcMarkSweepGC
+java.extended.properties=-server -Xms128m -Xmx768m -javaagent:%BE_HOME%/lib/cep-base.jar -XX:MaxPermSize=256m -XX:+UseParNewGC -XX:+UseConcMarkSweepGC
 
 #
 # 64 bit JVM parameters for production. Increase heap size and tune other
@@ -144,7 +144,7 @@ java.stop.method
 #
 java.property.tibco_home %TIB_HOME%
 java.property.tibco_tra_version %TRA_APPEND_VERSION%
-java.property.BE_HOME c:/tibco/be_home/be/5.2
+java.property.BE_HOME %BE_HOME%
 
 #
 # Specifies the classpath with expansion on

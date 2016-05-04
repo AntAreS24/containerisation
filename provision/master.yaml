@@ -165,6 +165,30 @@ coreos:
           --master=$private_ipv4:8080
         Restart=always
         RestartSec=10
+    - name: tibco-k8s-service.service
+      command: start
+      content: |
+        [Unit]
+        Description=TIBCO K8S Service
+        Documentation=
+        Requires=kube-apiserver.service kube-scheduler.service kube-controller-manager.service
+        After=kube-apiserver.service kube-scheduler.service kube-controller-manager.service
+        [Service]
+        Type=oneshot
+        EnvironmentFile=/etc/environment
+        ExecStart=/opt/bin/kubectl create -f /home/core/k8s-service-be.yaml
+    - name: tibco-k8s-rc.service
+      command: start
+      content: |
+        [Unit]
+        Description=TIBCO K8S ReplicationController
+        Documentation=
+        Requires=tibco-k8s-service.service
+        After=tibco-k8s-service.service
+        [Service]
+        Type=oneshot
+        EnvironmentFile=/etc/environment
+        ExecStart=/opt/bin/kubectl create -f /home/core/k8s-rc-be.json
   update:
     group: __CHANNEL__
     reboot-strategy: off

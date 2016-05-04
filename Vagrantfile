@@ -56,11 +56,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		c.vm.network "private_network", ip: "#{MASTER_IP}"
 		c.vm.network :forwarded_port, guest:5000, host:5000
 		c.vm.network :forwarded_port, guest:8080, host:8080
+		c.vm.network :forwarded_port, guest:9090, host:9090
 		ETCD_SEED_CLUSTER = "#{c.vm.hostname}=http://#{MASTER_IP}:2380"
 		c.vm.provision :file, :source => "./provision/master.yaml", :destination => "/tmp/vagrantfile-user-data"
 		c.vm.provision :file, :source => "./provision/namespace.yaml", :destination => "namespace.yaml"
-		c.vm.provision :file, :source => "./provision/k8s-pod-be.yaml", :destination => "k8s-pod-be.yaml"
-		c.vm.provision :file, :source => "./provision/k8s-service-be.yaml", :destination => "k8s-service-be.yaml"
+		c.vm.provision :file, :source => "./provision/k8s-service-be.json", :destination => "k8s-service-be.json"
 		c.vm.provision :file, :source => "./provision/k8s-rc-be.json", :destination => "k8s-rc-be.json"
 		c.vm.provision :shell, :privileged => true,
 			inline: <<-EOF
@@ -75,15 +75,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 				#sed -i"*" "s|__ETCD_SEED_CLUSTER__|#{ETCD_SEED_CLUSTER}|g" /tmp/vagrantfile-user-data
 				mv /tmp/vagrantfile-user-data /var/lib/coreos-vagrant/
 			EOF
-		
-		# c.vm.provision "docker" do |docker|
-			# docker.run "registry",
-				# image: "registry:2",
-				# args: "-p 5000:5000"
-		# end
 	end
 	
-	(1..(NO_NODES.to_i + 1)).each do |i|
+	(1..(NO_NODES.to_i)).each do |i|
 		hostname = "node%02d" % (i)
 		config.vm.define "#{hostname}" do |c|
 			c.vm.hostname = "#{hostname}"
