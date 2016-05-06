@@ -83,6 +83,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 			c.vm.hostname = "#{hostname}"
 			c.vm.network "private_network", ip: "#{BASE_IP_ADDR}.#{MASTER_UNIQUE_IP+i}"
 			ETCD_SEED_CLUSTER_MASTER = "master=http://#{MASTER_IP}:2380"
+			config.vm.provider :virtualbox do |v, override|
+				v.memory = 2048
+				v.cpus = 1
+			end
 			c.vm.synced_folder "be/", "/home/core/be/", :nfs => true, :mount_options => ['nolock,vers=3,udp']
 			c.vm.provision :file, :source => "./provision/node.yaml", :destination => "/tmp/vagrantfile-user-data"
 			c.vm.provision :shell, :privileged => true,

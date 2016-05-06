@@ -68,7 +68,7 @@ tibco.env.JVM_LIB_DIR=%TIB_JAVA_HOME%/lib/amd64
 #           -XX:+CMSIncrementalMode -XX:+CMSIncrementalPacing -XX:+UseCMSCompactAtFullCollection -XX:CMSFullGCsBeforeCompaction=2
 #           -XX:+DisableExplicitGC -XX:+UseTLAB -XX:+UseSpinning -XX:+UseFastAccessorMethods
 #
-java.extended.properties=-server -Xms128m -Xmx768m -javaagent:%BE_HOME%/lib/cep-base.jar -XX:MaxPermSize=256m -XX:+UseParNewGC -XX:+UseConcMarkSweepGC
+java.extended.properties=-server -Xms128m -Xmx512m -javaagent:%BE_HOME%/lib/cep-base.jar -XX:MaxPermSize=256m -XX:+UseParNewGC -XX:+UseConcMarkSweepGC
 
 #
 # 64 bit JVM parameters for production. Increase heap size and tune other
