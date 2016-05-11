@@ -176,6 +176,7 @@ coreos:
         [Service]
         Type=oneshot
         EnvironmentFile=/etc/environment
+        ExecStart=-/opt/bin/kubectl delete service tibcobe-service
         ExecStart=/opt/bin/kubectl create -f /home/core/k8s-service-be.yaml
     - name: tibco-k8s-rc.service
       command: start
@@ -188,6 +189,7 @@ coreos:
         [Service]
         Type=oneshot
         EnvironmentFile=/etc/environment
+        ExecStart=-/opt/bin/kubectl delete rc tibcobe
         ExecStart=/opt/bin/kubectl create -f /home/core/k8s-rc-be.json
   update:
     group: __CHANNEL__

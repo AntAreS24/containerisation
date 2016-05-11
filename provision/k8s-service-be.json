@@ -2,16 +2,14 @@
 	"kind": "Service",
 	"apiVersion": "v1",
 	"metadata": {
-		"name": "tibco-be-service",
+		"name": "tibcobe-service",
 		"labels": {
-			"name": "tibco-be-pod",
-			"tier": "backend"
+			"name": "tibcobe-service"
 		}
 	},
 	"spec": {
 		"selector": {
-			"name": "tibco-be-pod",
-			"tier": "backend"
+			"app": "tibcobe"
 		},
 		"ports": [{
 			"name": "http",
@@ -19,8 +17,9 @@
 			"port": 7000,
 			"targetPort": 7000
 		}],
+		"type": "NodePort",
 		"externalIPs":[
-			"172.168.0.100"
+			"172.17.8.100"
 		]
 	}
 }

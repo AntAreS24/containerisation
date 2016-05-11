@@ -2,23 +2,23 @@
 	"kind": "ReplicationController",
 	"apiVersion": "v1",
 	"metadata": {
-		"name": "tibco-be-rc",
+		"name": "tibcobe",
 		"labels": {
 			"tier": "backend",
-			"name": "tibco-be"
+			"name": "tibcobe"
 		}
 	},
 	"spec": {
 		"replicas": 2,
 		"selector": {
-			"tier": "backend",
-			"app": "tibco-be-pod"
+			"app": "tibcobe"
 		},
 		"template": {
 			"metadata": {
+				"name": "tibcobe",
 				"labels": {
 					"tier": "backend",
-					"app": "tibco-be-pod"
+					"app": "tibcobe"
 				}
 			},
 			"spec": {

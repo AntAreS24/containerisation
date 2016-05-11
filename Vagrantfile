@@ -57,7 +57,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		c.vm.network :forwarded_port, guest:5000, host:5000
 		c.vm.network :forwarded_port, guest:8080, host:8080
 		c.vm.network :forwarded_port, guest:9090, host:9090
+		c.vm.network :forwarded_port, guest:7000, host:7000
 		ETCD_SEED_CLUSTER = "#{c.vm.hostname}=http://#{MASTER_IP}:2380"
+		c.vm.synced_folder "lb/", "/home/core/lb/", :nfs => true, :mount_options => ['nolock,vers=3,udp,noatime']
 		c.vm.provision :file, :source => "./provision/master.yaml", :destination => "/tmp/vagrantfile-user-data"
 		c.vm.provision :file, :source => "./provision/namespace.yaml", :destination => "namespace.yaml"
 		c.vm.provision :file, :source => "./provision/k8s-service-be.json", :destination => "k8s-service-be.json"
@@ -76,18 +78,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 				mv /tmp/vagrantfile-user-data /var/lib/coreos-vagrant/
 			EOF
 	end
-	
+	ETCD_SEED_CLUSTER_MASTER = "master=http://#{MASTER_IP}:2380"
 	(1..(NO_NODES.to_i)).each do |i|
 		hostname = "node%02d" % (i)
 		config.vm.define "#{hostname}" do |c|
 			c.vm.hostname = "#{hostname}"
 			c.vm.network "private_network", ip: "#{BASE_IP_ADDR}.#{MASTER_UNIQUE_IP+i}"
-			ETCD_SEED_CLUSTER_MASTER = "master=http://#{MASTER_IP}:2380"
 			config.vm.provider :virtualbox do |v, override|
 				v.memory = 2048
 				v.cpus = 1
 			end
-			c.vm.synced_folder "be/", "/home/core/be/", :nfs => true, :mount_options => ['nolock,vers=3,udp']
+			c.vm.synced_folder "be/", "/home/core/be/", :nfs => true, :mount_options => ['nolock,vers=3,udp,noatime']
 			c.vm.provision :file, :source => "./provision/node.yaml", :destination => "/tmp/vagrantfile-user-data"
 			c.vm.provision :shell, :privileged => true,
 				inline: <<-EOF
