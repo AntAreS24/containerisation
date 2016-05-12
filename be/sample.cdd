@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <cluster xmlns="http://tibco.com/businessevents/configuration/5.2">
     <revision>
-        <version>5</version>
+        <version>8</version>
         <author>Ben</author>
-        <date>2016/04/23 09:16:03</date>
+        <date>2016/05/12 21:41:38</date>
         <comment/>
     </revision>
     <name>sample</name>
@@ -34,13 +34,13 @@
     </function-groups>
     <destination-groups>
         <destinations id="default_inputs">
-            <destination id="trigger_processing_474F6A09">
-                <pre-processor/>
+            <destination id="trigger_processing_6B793053">
+                <pre-processor>/RuleFunctions/preproc</pre-processor>
                 <queue-size>0</queue-size>
                 <thread-count/>
                 <threading-model>shared-queue</threading-model>
                 <thread-affinity-rule-function/>
-                <uri>/Channels/HTTPChannel/trigger_processing</uri>
+                <uri>/Channels/EMS/trigger_processing</uri>
             </destination>
         </destinations>
     </destination-groups>

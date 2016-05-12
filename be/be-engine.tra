@@ -33,7 +33,7 @@ tibco.env.APP_ARGS=
 #    All classes and jars in these directories will be automatically picked
 #    up. You can also specify individual files. Use forward slashes only.
 #
-tibco.env.CUSTOM_EXT_PREPEND_CP=
+tibco.env.CUSTOM_EXT_PREPEND_CP=/data/be/ems
 tibco.env.CUSTOM_EXT_APPEND_CP=
 
 
@@ -218,3 +218,6 @@ application.args %APP_ARGS%
 
 # Jars that should be skipped by Tomcat server's TLDJarScanner
 tomcat.util.scan.DefaultJarScanner.jarsToSkip=xdata.jar,tibrvj.jar
+
+
+tibco.clientVar.connections/ems/connection_url=tcp://10.0.2.2:7222
