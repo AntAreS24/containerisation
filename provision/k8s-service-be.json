@@ -9,7 +9,7 @@
 	},
 	"spec": {
 		"selector": {
-			"app": "tibcobe"
+			"name": "tibcobe"
 		},
 		"ports": [{
 			"name": "http",

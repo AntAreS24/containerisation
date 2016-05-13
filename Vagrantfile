@@ -54,10 +54,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	config.vm.define "master" do |c|
 		c.vm.hostname = "master"
 		c.vm.network "private_network", ip: "#{MASTER_IP}"
-		c.vm.network :forwarded_port, guest:5000, host:5000
-		c.vm.network :forwarded_port, guest:8080, host:8080
-		c.vm.network :forwarded_port, guest:9090, host:9090
-		c.vm.network :forwarded_port, guest:7000, host:7000
 		ETCD_SEED_CLUSTER = "#{c.vm.hostname}=http://#{MASTER_IP}:2380"
 		c.vm.synced_folder "lb/", "/home/core/lb/", :nfs => true, :mount_options => ['nolock,vers=3,udp,noatime']
 		c.vm.provision :file, :source => "./provision/master.yaml", :destination => "/tmp/vagrantfile-user-data"
@@ -103,14 +99,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 					#sed -i"*" "s|__ETCD_SEED_CLUSTER__|#{ETCD_SEED_CLUSTER_MASTER}|g" /tmp/vagrantfile-user-data
 					mv /tmp/vagrantfile-user-data /var/lib/coreos-vagrant/
 				EOF
-			# Run BE docker image from TIBCO repo
-			#c.vm.provision "docker" do |docker|
-			#	docker.run "sample",
-			#		image: "dockerregistry.tibco.com:5000/businessevents",
-			#		image: "ddr.tibco.com:5000/businessevents",
-			#		image: "#{MASTER_IP}:5000/businessevents",
-			#		args: "-p 8090:8090 -p 8010:8010 --env-file ex-be1.env"
-			#end
 		end
 	end
 	
