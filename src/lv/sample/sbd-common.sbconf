@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<streambase-configuration xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.streambase.com/schemas/sbconf/">
+    <!-- 
+		This file contains StreamBase configuration settings that should be shared with all
+		developers/users of the project.  As such, it should be placed under source control.
+			(Note that module/operator search paths, and all Java settings are maintained
+			 automatically in the sbd-studio.sbconf file.)
+	 -->
+        <sb-include file="./sbd-studio.sbconf"/>
+</streambase-configuration>

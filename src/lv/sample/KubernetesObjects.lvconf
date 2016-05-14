@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ASCII"?>
+<liveview-configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.streambase.com/schemas/lvconf/">
+  <data-table id="KubernetesObjects">
+    <fields>
+      <field name="name" type="string"/>
+      <field name="type" type="string"/>
+      <field name="status" type="string"/>
+      <field name="parent" type="string"/>
+    </fields>
+    <primary-key>
+      <field ref="name"/>
+      <field ref="type"/>
+    </primary-key>
+  </data-table>
+</liveview-configuration>

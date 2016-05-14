@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<modify version="7.6.2">
+    <add>
+        <annotations>
+            <annotation name="hygienic"/>
+        </annotations>
+        <stream name="InputStream">
+            <schema>
+                <field name="name" type="string"/>
+            </schema>
+        </stream>
+        <module-reference name="ReceiveBEResponseRef1">
+            <output name="OutputStream" port="1" stream="OutputStream"/>
+            <param name="file" value="ReceiveBEResponse.sbapp"/>
+        </module-reference>
+        <output-stream name="OutputStream"/>
+        <module-reference name="SendEventToBERef1">
+            <input name="InputStream" port="1" stream="InputStream"/>
+            <param name="file" value="SendEventToBE.sbapp"/>
+        </module-reference>
+    </add>
+</modify>

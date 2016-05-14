@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<event:SimpleEvent xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:event="http:///com/tibco/cep/designtime/core/model/event" namespace="/Events/" folder="/Events/" name="TriggerProcessingResponse" description="" GUID="DBB8C45B-8C91-75C6-868B-76B1C9A206EC" ownerProjectName="sample" superEventPath="" ttlUnits="Seconds" channelURI="/Channels/HTTPChannel" destinationName="trigger_processing">
+  <properties name="processingresponse" ownerProjectName="sample" ownerPath="/Events/TriggerProcessingResponse"/>
+  <properties name="message" ownerProjectName="sample" ownerPath="/Events/TriggerProcessingResponse"/>
+  <properties name="code" ownerProjectName="sample" type="int" ownerPath="/Events/TriggerProcessingResponse"/>
+  <expiryAction name="TriggerProcessingResponse_expiryAction" ownerProjectName="sample" actionText="" conditionText="">
+    <symbols>
+      <symbolList idName="triggerprocessingresponse" type="/Events/TriggerProcessingResponse"/>
+    </symbols>
+  </expiryAction>
+</event:SimpleEvent>

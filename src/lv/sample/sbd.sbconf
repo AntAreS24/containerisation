@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<streambase-configuration xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.streambase.com/schemas/sbconf/">
+    <!--Include common configuration settings for the project.-->
+    <sb-include file="./sbd-common.sbconf"/>
+
+<adapter-configurations>
+        <adapter-configuration name="jms">
+            <sb-jms-adapter-config adapter-class="com.streambase.sb.adapter.jms2.JMSConsumer">
+  <jms-servers>
+    <jms-server connection-factory-name="ConnectionFactory" name="EMSLocal" provider-context-factory="com.tibco.tibjms.naming.TibjmsInitialContextFactory" provider-name="TIBCO EMS" provider-url="tibjmsnaming://localhost:7222" server-reconnect-interval="30">
+      <destinations>
+        <destination acknowledge-mode="CLIENT_ACKNOWLEDGE" is-topic="false" message-to-tuple-converter="com.streambase.sb.adapter.jms2.converters.DefaultFromJMSTextMessageConverter" name="sample.trigger.processing" priority="4" tuple-to-message-converter="com.streambase.sb.adapter.jms2.converters.DefaultToJMSTextMessageConverter"/>
+        <destination is-topic="false" message-to-tuple-converter="com.streambase.sb.adapter.jms2.converters.DefaultFromJMSTextMessageConverter" name="sample.response" priority="4" tuple-to-message-converter="com.streambase.sb.adapter.jms2.converters.DefaultToJMSTextMessageConverter"/>
+      </destinations>
+    </jms-server>
+  </jms-servers>
+</sb-jms-adapter-config>
+        </adapter-configuration>
+    </adapter-configurations>
+</streambase-configuration>

@@ -1,0 +1,31 @@
+/**
+ * @description 
+ * @author beamiot-W530
+ */
+rule Rules.NormalProcessing {
+	attribute {
+		priority = 5;
+		forwardChain = true;
+	}
+	declare {
+		Events.TriggerProcessing event;
+	}
+	when {
+		event.name != "busy";
+	}
+	then {
+		Object logger = Log.getLogger("Rules.NormalProcessing");
+		
+		Log.log(logger, "INFO", "Starting the normal processing...");
+		Log.log(logger, "INFO", "Normal processing completed.");
+		
+		
+		Events.TriggerProcessingResponse response = Events.TriggerProcessingResponse.TriggerProcessingResponse(
+			null /*extId String */,
+			"{test: 'body'}" /*payload String */,
+			"Processed Successfully"/*processingresponse String */,
+			""/*message String */,
+			200/*code int */);
+		Event.replyEvent(event, response); 	
+	}
+}

@@ -1,0 +1,19 @@
+/**
+ * @description 
+ */
+void rulefunction RuleFunctions.preproc {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Events.TriggerProcessing event;
+	}
+	body {
+		Object logger = Log.getLogger("RuleFunctions.preproc");
+		
+		Log.log(logger, "INFO", "Received message with values...");
+		Log.log(logger, "INFO", "\t%s", event.name);
+		Log.log(logger, "INFO", "\t%s", event.number);
+		
+	}
+}

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration:StudioProjectConfiguration xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:configuration="http:///com/tibco/cep/studio/common/configuration/model/project_configuration.ecore" name="sample" version="5.2.2" build="077" xpathVersion="2.0">
+  <javaSourceFolderEntries entryType="JAVA_SOURCE_FOLDER" path="/sample/JavaSrc" readOnly="true"/>
+  <enterpriseArchiveConfiguration name="sample" author="Ben" version="5" path="D:\Work\EPBU\Demo\Dynamic Deployment\src\be\sample\build\Sample.ear"/>
+  <bpmnProcessSettings/>
+</configuration:StudioProjectConfiguration>

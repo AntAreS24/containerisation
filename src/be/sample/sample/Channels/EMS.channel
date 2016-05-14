@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<channel:Channel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:channel="http:///com/tibco/cep/designtime/core/model/service/channel" xmlns:designtime="http:///com/tibco/cep/designtime/core/model/designtime_ontology.ecore" namespace="/Channels/" folder="/Channels/" name="EMS" description="" GUID="B13BE35A-713A-0044-DDE0-10A80EB77915" ownerProjectName="sample">
+  <driver label="JMS" channel="/">
+    <properties>
+      <properties xsi:type="designtime:SimpleProperty" name="ProviderURL" value="%%connections/ems/connection_url%%"/>
+      <properties xsi:type="designtime:SimpleProperty" name="UserName" value="%%connections/ems/username%%"/>
+      <properties xsi:type="designtime:SimpleProperty" name="Password" value="%%connections/ems/password%%"/>
+      <properties xsi:type="designtime:SimpleProperty" name="IsTransacted" value=""/>
+      <properties xsi:type="designtime:SimpleProperty" name="ClientID" value=""/>
+    </properties>
+    <destinations name="trigger_processing" description="" GUID="39B82A28-988B-56B9-66EF-7BE7E4FBFEA7" ownerProjectName="sample" eventURI="/Events/TriggerProcessing" serializerDeserializerClass="com.tibco.cep.driver.jms.serializer.TextMessageSerializer" driverConfig="//@driver">
+      <properties>
+        <properties xsi:type="designtime:SimpleProperty" name="IncludeEventType" value="ALWAYS"/>
+        <properties xsi:type="designtime:SimpleProperty" name="Queue" value="true"/>
+        <properties xsi:type="designtime:SimpleProperty" name="Name" value="sample.trigger.processing"/>
+        <properties xsi:type="designtime:SimpleProperty" name="Selector" value=""/>
+        <properties xsi:type="designtime:SimpleProperty" name="DeliveryMode" value="1"/>
+        <properties xsi:type="designtime:SimpleProperty" name="AckMode" value="23"/>
+        <properties xsi:type="designtime:SimpleProperty" name="Priority" value="4"/>
+        <properties xsi:type="designtime:SimpleProperty" name="TTL" value="0"/>
+        <properties xsi:type="designtime:SimpleProperty" name="DurableSuscriberName" value="%%Deployment%%:%%EngineName%%:%%SessionName%%:%%ChannelURI%%:%%DestinationName%%"/>
+      </properties>
+    </destinations>
+    <driverType xsi:type="channel:DriverTypeInfo" driverTypeName="JMS"/>
+  </driver>
+</channel:Channel>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<modify version="7.6.2">
+    <add>
+        <annotations>
+            <annotation name="hygienic"/>
+        </annotations>
+        <stream name="InputStream">
+            <schema>
+                <field name="name" type="string"/>
+            </schema>
+        </stream>
+        <box name="Map" type="map">
+            <input port="1" stream="InputStream"/>
+            <output port="1" stream="out:Map_1"/>
+            <target-list>
+                <item name="input" selection="none"/>
+                <expressions>
+                    <include field="jmsHeader">tuple('Queue---&gt;sample.response' as jmsReplyTo)</include>
+                    <include field="jmsProperties">tuple(name as name, 1 as number)</include>
+                </expressions>
+            </target-list>
+        </box>
+        <box name="SendEMSMessage" type="java">
+            <input port="1" stream="out:Map_1"/>
+            <param name="start:state" value="true"/>
+            <param name="javaclass" value="com.streambase.sb.adapter.jms2.EMSProducer"/>
+            <param name="connectOnStartup" value="true"/>
+            <param name="destinationName" value="sample.trigger.processing"/>
+            <param name="destinationType" value="Preconfigured"/>
+            <param name="emitMsgSentTuples" value="false"/>
+            <param name="enableStatusPort" value="false"/>
+            <param name="logLevel" value="INFO"/>
+            <param name="publishNulls" value="true"/>
+            <param name="serverName" value="EMSLocal"/>
+        </box>
+    </add>
+</modify>

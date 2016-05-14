@@ -1,0 +1,46 @@
+/**
+ * @description 
+ * @author beamiot-W530
+ */
+rule Rules.BusyProcessing {
+	attribute {
+		priority = 5;
+		forwardChain = true;
+	}
+	declare {
+		Events.TriggerProcessing event;
+	}
+	when {
+		event.name == "busy";
+	}
+	then {
+		Object logger = Log.getLogger("Rules.BusyProcessing");
+		
+		Log.log(logger, "INFO", "Starting the BUSY processing...");
+		boolean continueLoop = true;
+		long startTime = System.currentTimeMillis();
+		long expectedEndTime = startTime + (event.number*1000*60);
+		while(continueLoop){
+			if(System.currentTimeMillis() < expectedEndTime){
+				// WARNING!!!!!
+				// NEVER EVER DO THAT IN REAL PROJECT!!!!
+				// This is just to similate a busy engine.
+				Engine.sleep(500);
+				Log.log(logger, "INFO", "Still processing...");
+		
+			}else{
+				continueLoop = false;
+			}
+		}
+		Log.log(logger, "INFO", "BUSY processing completed.");
+		
+		
+		Events.TriggerProcessingResponse response = Events.TriggerProcessingResponse.TriggerProcessingResponse(
+			null /*extId String */,
+			"{test: 'body'}" /*payload String */,
+			"Processed A LOT Successfully"/*processingresponse String */,
+			""/*message String */,
+			200/*code int */);
+		Event.replyEvent(event, response); 
+	}
+}
