@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<modify version="7.6.2">
+    <add>
+        <annotations>
+            <annotation name="hygienic"/>
+        </annotations>
+        <stream name="UIActionInputStream" scope="public">
+            <schema>
+                <field name="action" type="string"/>
+                <field name="params" type="string"/>
+            </schema>
+        </stream>
+        <box name="OutputAdapter" type="outputadapter">
+            <input port="1" stream="UIActionInputStream"/>
+            <output port="1" stream="out:OutputAdapter_1"/>
+            <param name="start:state" value="true"/>
+            <param name="javaclass" value="com.streambase.sb.adapter.logger.Log"/>
+            <param name="CaptureStrategy" value="FLATTEN"/>
+            <param name="asyncEnabled" value="true"/>
+            <param name="compressFrequentMessages" value="false"/>
+            <param name="compressMaxWindowSize" value="5.0"/>
+            <param name="customFormat" value=""/>
+            <param name="customFormatExpression" value=""/>
+            <param name="customFormatType" value="Basic"/>
+            <param name="emitLoggedTuples" value="true"/>
+            <param name="encodeSubType" value="Map"/>
+            <param name="hexEncodeBlobs" value="false"/>
+            <param name="includeNullFields" value="true"/>
+            <param name="logLevel" value="Info"/>
+            <param name="logLevelOverrideFieldName" value=""/>
+            <param name="loggerFormatType" value="JSON"/>
+            <param name="messageIdentifier" value="Logger"/>
+            <param name="messageIdentifierExpression" value=""/>
+            <param name="messageIdentifierType" value="Basic"/>
+            <param name="messagePrefix" value=""/>
+            <param name="quoteNullStrings" value="true"/>
+            <param name="timestampAsLong" value="false"/>
+            <param name="timestampFormat" value="yyyy-MM-dd HH:mm:ss.SSSZ"/>
+            <param name="verbose" value="false"/>
+        </box>
+        <box name="Filter" type="filter">
+            <input port="1" stream="out:OutputAdapter_1"/>
+            <output port="1" stream="out:Filter_1"/>
+            <output port="2" stream="out:Filter_2"/>
+            <output port="3" stream="OutputStream"/>
+            <param name="autogen-nomatch-port" value="true"/>
+            <param name="expression.0" value="action==&quot;delete&quot;"/>
+            <param name="expression.1" value="action==&quot;send&quot;"/>
+            <param name="expression.2" value="true"/>
+        </box>
+        <output-stream name="OutputStream"/>
+        <box name="MapMsgType" type="map">
+            <input port="1" stream="out:Filter_2"/>
+            <output port="1" stream="out:MapMsgType_1"/>
+            <target-list>
+                <item name="input" selection="none"/>
+                <expressions>
+                    <include field="name">params</include>
+                </expressions>
+            </target-list>
+        </box>
+        <box name="MapPodName" type="map">
+            <input port="1" stream="out:Filter_1"/>
+            <output port="1" stream="out:MapPodName_1"/>
+            <target-list>
+                <item name="input" selection="none"/>
+                <expressions>
+                    <include field="podName">params</include>
+                </expressions>
+            </target-list>
+        </box>
+        <module-reference name="DeletePodByNameRef1">
+            <input name="InputStream" port="1" stream="out:MapPodName_1"/>
+            <param name="file" value="DeletePodByName.sbapp"/>
+        </module-reference>
+        <module-reference name="SendEventToBERef1">
+            <input name="InputStream" port="1" stream="out:MapMsgType_1"/>
+            <param name="file" value="SendEventToBE.sbapp"/>
+        </module-reference>
+    </add>
+</modify>

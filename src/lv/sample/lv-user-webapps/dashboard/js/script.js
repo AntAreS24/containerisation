@@ -14,8 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
  */
 
+"use strict";
+
 //var host="172.17.8.100";
 //var port="8080";
+var debugQueryResult = false;
 
 var truncate = function (str, width, left) {
 	if (!str)
@@ -34,7 +37,9 @@ var truncate = function (str, width, left) {
 var pods = [];
 var services = [];
 var controllers = [];
+var nodes = [];
 var uses = {};
+
 
 var groups = {};
 
@@ -84,7 +89,7 @@ var connectControllers = function () {
 				jsPlumb.connect({
 					source : 'controller-' + controller.metadata.name,
 					target : 'pod-' + pod.metadata.name,
-					anchors : ["Bottom", "Bottom"],
+					anchors : ["Left", "Bottom"],
 					paintStyle : {
 						lineWidth : 5,
 						strokeStyle : 'rgb(51,105,232)'
@@ -165,7 +170,7 @@ var connectUses = function () {
 						target : 'service-' + serviceId,
 						endpoint : "Blank",
 						//anchors:["Bottom", "Top"],
-						anchors : [[0.5, 1, 0, 1, -30, 0], "Top"],
+						anchors : [[0.5, 0, 0, -1, -30, 0], "Right"],
 						//connector: "Straight",
 						connector : ["Bezier", {
 								curviness : 75
@@ -210,7 +215,7 @@ var makeGroupOrder = function () {
 			groupScores[key] = 0;
 		}
 		if (uses[key]) {
-			value = uses[key];
+			var value = uses[key];
 			$.each(value, function (ix, uses_label) {
 				if (!groupScores[uses_label]) {
 					groupScores[uses_label] = 1;
@@ -242,7 +247,7 @@ var renderNodes = function () {
 	var y = 25;
 	var x = 100;
 	$.each(nodes.items, function (index, value) {
-		console.log(value);
+		if(debugQueryResult){console.log(value);}
 		var div = $('<div/>');
 		var ready = 'not_ready';
 		$.each(value.status.conditions, function (index, condition) {
@@ -273,7 +278,7 @@ var renderGroups = function () {
 	var groupOrder = makeGroupOrder();
 	var counts = {}
 	$.each(groupOrder, function (ix, key) {
-		list = groups[key];
+		var list = groups[key];
 		// list = value;
 		if (!list) {
 			return;
@@ -283,7 +288,7 @@ var renderGroups = function () {
 		$.each(list, function (index, value) {
 			//console.log("render groups: " + value.type + ", " + value.metadata.name + ", " + index)
 			var eltDiv = null;
-			console.log(value);
+			if(debugQueryResult){console.log(value);}
 			var phase = value.status.phase ? value.status.phase.toLowerCase() : '';
 			if (value.type == "pod") {
 				if ('deletionTimestamp' in value.metadata) {
@@ -291,7 +296,7 @@ var renderGroups = function () {
 				}
 				eltDiv = $('<div class="window pod ' + phase + '" title="' + value.metadata.name + '" id="pod-' + value.metadata.name +
 						'" style="left: ' + (x + 250) + '; top: ' + (y + 160) + '"/>');
-				eltDiv.html('<i class="fa fa-trash-o" aria-hidden="true" id="pod-' + value.metadata.name +'-icon"></i>'+
+				eltDiv.html(//'<i class="fa fa-trash-o" aria-hidden="true" id="pod-' + value.metadata.name +'-icon"></i>'+
 					'<span>' +
 					//truncate(value.metadata.name, 8, true) +
 					value.metadata.name +
@@ -300,7 +305,7 @@ var renderGroups = function () {
 					'</span>');
 			} else if (value.type == "service") {
 				eltDiv = $('<div class="window wide service ' + phase + '" title="' + value.metadata.name + '" id="service-' + value.metadata.name +
-						'" style="left: ' + 75 + '; top: ' + y + '"/>');
+						'" style="left: ' + 75 + '; top: ' + 10 + '"/>');
 				eltDiv.html('<span>' +
 					value.metadata.name +
 					(value.metadata.labels.version ? "<br/><br/>" + value.metadata.labels.version : "") +
@@ -316,7 +321,7 @@ var renderGroups = function () {
 				var calcLeft = 400 + (value.status.replicas * 130);
 				var left = minLeft > calcLeft ? minLeft : calcLeft;
 				eltDiv = $('<div class="window wide controller" title="' + value.metadata.name + '" id="controller-' + value.metadata.name +
-						'" style="left: ' + (left + counts[key] * 100) + '; top: ' + (y + 100 + counts[key] * 100) + '"/>');
+						'" style="left: ' + (left + counts[key] * 100) + '; top: ' + (275 + counts[key] * 100) + '"/>');
 				eltDiv.html('<span>' +
 					value.metadata.name +
 					(value.metadata.labels.version ? "<br/><br/>" + value.metadata.labels.version : "") +
@@ -408,6 +413,7 @@ function refresh(instance) {
 		renderNodes();
 		renderGroups();
 		connectControllers();
+		populatePodList();
 
 		setTimeout(function () {
 			refresh(instance);
@@ -442,13 +448,50 @@ jsPlumb.bind("ready", function () {
 	jsPlumb.fire("jsPlumbDemoLoaded", instance);
 });
 
-$(document).ready(function() {
-    $("#btnSubmit").click(function(e){
-        e.preventDefault();
-    }); 
-});
+function populatePodList(){
+	if(pods === undefined || pods === null){
+		return;
+	}
+	var s = $('<select id="podlist"/>');
 
-$("div.pod > i").click(function(){
-	console.log("test");
-	
+	for(var i = 0; i < pods.items.length; i++) {
+		$('<option />', {value: pods.items[i].metadata.name, text: pods.items[i].metadata.name}).appendTo(s);
+	}
+	$('#poddeletelist').html(s);
+};
+
+var serverURI = 'sb://localhost:10000';
+var lvConnection;
+LiveView.connect({url: '/lv/client/'}).then(
+	function(connection){
+		lvConnection = connection;
+	}
+);
+
+
+$(document).ready(function() {
+    $("#btnSubmitComplexMessage").click(function(e){
+        if(lvConnection !== undefined && lvConnection !== null){
+			console.log('Send Action "send" for "busy" message');
+			lvConnection.sendTuple({"action":"send", "params":"simple"}, "LV_UIAction_GlobalPreProcessor.UIActionInputStream", null, {serverUri:serverURI});
+		}
+		e.preventDefault();
+    }); 
+
+    $("#btnSubmitSimpleMessage").click(function(e){
+        if(lvConnection !== undefined && lvConnection !== null){
+			console.log('Send Action "send" for "simple" message');
+			lvConnection.sendTuple({"action":"send", "params":"simple"}, "LV_UIAction_GlobalPreProcessor.UIActionInputStream", null, {serverUri:serverURI});
+		}
+		e.preventDefault();
+    }); 
+
+    $("#btnSubmitDeletePod").click(function(e){
+        if(lvConnection !== undefined && lvConnection !== null){
+			var podName = $('#podlist').val();
+			console.log('Send Action "delete" for "'+podName+'" message');
+			lvConnection.sendTuple({"action":"delete", "params":podName}, "LV_UIAction_GlobalPreProcessor.UIActionInputStream", null, {serverUri:serverURI});
+		}
+		e.preventDefault();
+    }); 
 });

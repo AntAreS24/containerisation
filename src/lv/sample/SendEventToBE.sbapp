@@ -17,6 +17,7 @@
                 <expressions>
                     <include field="jmsHeader">tuple('Queue---&gt;sample.response' as jmsReplyTo)</include>
                     <include field="jmsProperties">tuple(name as name, 1 as number)</include>
+                    <include field="payload">string(null)</include>
                 </expressions>
             </target-list>
         </box>

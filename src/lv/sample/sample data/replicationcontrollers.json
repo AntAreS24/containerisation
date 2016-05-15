@@ -1,0 +1,104 @@
+{
+  "kind": "ReplicationControllerList",
+  "apiVersion": "v1",
+  "metadata": {
+    "selfLink": "/api/v1/replicationcontrollers",
+    "resourceVersion": "14140"
+  },
+  "items": [
+    {
+      "metadata": {
+        "name": "tibcobe-rc",
+        "namespace": "default",
+        "selfLink": "/api/v1/namespaces/default/replicationcontrollers/tibcobe-rc",
+        "uid": "6d121b79-18ca-11e6-ac8f-0800278925dc",
+        "resourceVersion": "13980",
+        "generation": 1,
+        "creationTimestamp": "2016-05-13T05:20:37Z",
+        "labels": {
+          "name": "tibcobe",
+          "tier": "backend"
+        }
+      },
+      "spec": {
+        "replicas": 2,
+        "selector": {
+          "name": "tibcobe"
+        },
+        "template": {
+          "metadata": {
+            "name": "tibcobe",
+            "creationTimestamp": null,
+            "labels": {
+              "name": "tibcobe",
+              "tier": "backend",
+              "uses": "tibcobe-service"
+            }
+          },
+          "spec": {
+            "volumes": [
+              {
+                "name": "beconfig",
+                "hostPath": {
+                  "path": "/home/core/be"
+                }
+              }
+            ],
+            "containers": [
+              {
+                "name": "k8be",
+                "image": "ddr.tibco.com:5000/businessevents",
+                "ports": [
+                  {
+                    "containerPort": 7000,
+                    "protocol": "TCP"
+                  }
+                ],
+                "env": [
+                  {
+                    "name": "BE_ENGINE_EAR_1",
+                    "value": "/data/be/sample.ear"
+                  },
+                  {
+                    "name": "BE_ENGINE_CDD_1",
+                    "value": "/data/be/sample.cdd"
+                  },
+                  {
+                    "name": "BE_ENGINE_UNIT_1",
+                    "value": "sample-inf"
+                  },
+                  {
+                    "name": "BE_ENGINE_TRA_1",
+                    "value": "/data/be/be-engine.tra"
+                  },
+                  {
+                    "name": "BE_ENGINE_JMX_1",
+                    "value": "9990"
+                  }
+                ],
+                "resources": {},
+                "volumeMounts": [
+                  {
+                    "name": "beconfig",
+                    "mountPath": "/data/be"
+                  }
+                ],
+                "terminationMessagePath": "/dev/termination-log",
+                "imagePullPolicy": "Always"
+              }
+            ],
+            "restartPolicy": "Always",
+            "terminationGracePeriodSeconds": 30,
+            "dnsPolicy": "ClusterFirst",
+            "securityContext": {}
+          }
+        }
+      },
+      "status": {
+        "replicas": 2,
+        "fullyLabeledReplicas": 2,
+        "observedGeneration": 1
+      }
+    }
+  ]
+}

@@ -44,6 +44,11 @@
   text-align: left;
 }
 
+.navbar-button{
+	float: right;
+	border: 1px solid black;
+}
+
 #nav-logo-img {
   height: 42px;
 }
@@ -62,7 +67,7 @@
     position: absolute;
     left: 0;
     right: 0;
-    top: 50px;
+    top: 60px;
     height: 200px;
     background-color: light-grey;
     border-bottom: thick solid black;

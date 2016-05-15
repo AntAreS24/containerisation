@@ -1,0 +1,275 @@
+{
+  "kind": "PodList",
+  "apiVersion": "v1",
+  "metadata": {
+    "selfLink": "/api/v1/pods",
+    "resourceVersion": "14023"
+  },
+  "items": [
+    {
+      "metadata": {
+        "name": "tibcobe-rc-2jagd",
+        "generateName": "tibcobe-rc-",
+        "namespace": "default",
+        "selfLink": "/api/v1/namespaces/default/pods/tibcobe-rc-2jagd",
+        "uid": "fc9546bd-1a24-11e6-a7a9-0800278925dc",
+        "resourceVersion": "14018",
+        "creationTimestamp": "2016-05-14T22:41:24Z",
+        "labels": {
+          "name": "tibcobe",
+          "tier": "backend",
+          "uses": "tibcobe-service"
+        },
+        "annotations": {
+          "kubernetes.io/created-by": "{\"kind\":\"SerializedReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"ReplicationController\",\"namespace\":\"default\",\"name\":\"tibcobe-rc\",\"uid\":\"6d121b79-18ca-11e6-ac8f-0800278925dc\",\"apiVersion\":\"v1\",\"resourceVersion\":\"11478\"}}\n"
+        }
+      },
+      "spec": {
+        "volumes": [
+          {
+            "name": "beconfig",
+            "hostPath": {
+              "path": "/home/core/be"
+            }
+          },
+          {
+            "name": "default-token-b9e4f",
+            "secret": {
+              "secretName": "default-token-b9e4f"
+            }
+          }
+        ],
+        "containers": [
+          {
+            "name": "k8be",
+            "image": "ddr.tibco.com:5000/businessevents",
+            "ports": [
+              {
+                "containerPort": 7000,
+                "protocol": "TCP"
+              }
+            ],
+            "env": [
+              {
+                "name": "BE_ENGINE_EAR_1",
+                "value": "/data/be/sample.ear"
+              },
+              {
+                "name": "BE_ENGINE_CDD_1",
+                "value": "/data/be/sample.cdd"
+              },
+              {
+                "name": "BE_ENGINE_UNIT_1",
+                "value": "sample-inf"
+              },
+              {
+                "name": "BE_ENGINE_TRA_1",
+                "value": "/data/be/be-engine.tra"
+              },
+              {
+                "name": "BE_ENGINE_JMX_1",
+                "value": "9990"
+              }
+            ],
+            "resources": {},
+            "volumeMounts": [
+              {
+                "name": "beconfig",
+                "mountPath": "/data/be"
+              },
+              {
+                "name": "default-token-b9e4f",
+                "readOnly": true,
+                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
+              }
+            ],
+            "terminationMessagePath": "/dev/termination-log",
+            "imagePullPolicy": "Always"
+          }
+        ],
+        "restartPolicy": "Always",
+        "terminationGracePeriodSeconds": 30,
+        "dnsPolicy": "ClusterFirst",
+        "serviceAccountName": "default",
+        "serviceAccount": "default",
+        "nodeName": "172.17.8.101",
+        "securityContext": {}
+      },
+      "status": {
+        "phase": "Running",
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "False",
+            "lastProbeTime": null,
+            "lastTransitionTime": "2016-05-14T22:41:24Z",
+            "reason": "ContainersNotReady",
+            "message": "containers with unready status: [k8be]"
+          }
+        ],
+        "hostIP": "172.17.8.101",
+        "podIP": "172.18.0.3",
+        "startTime": "2016-05-14T22:41:24Z",
+        "containerStatuses": [
+          {
+            "name": "k8be",
+            "state": {
+              "waiting": {
+                "reason": "CrashLoopBackOff",
+                "message": "Back-off 10s restarting failed container=k8be pod=tibcobe-rc-2jagd_default(fc9546bd-1a24-11e6-a7a9-0800278925dc)"
+              }
+            },
+            "lastState": {
+              "terminated": {
+                "exitCode": 0,
+                "reason": "Completed",
+                "startedAt": "2016-05-14T22:41:34Z",
+                "finishedAt": "2016-05-14T22:41:34Z",
+                "containerID": "docker://4d3ee5975d9e971769b38a9e321a44139ae004b640d96d1b3a18be9c4094b34a"
+              }
+            },
+            "ready": false,
+            "restartCount": 1,
+            "image": "ddr.tibco.com:5000/businessevents",
+            "imageID": "docker://sha256:48e6bd0642a752cc871eb7f2151f23da719c30654c53dbc8801d0c43b5fae9a2",
+            "containerID": "docker://4d3ee5975d9e971769b38a9e321a44139ae004b640d96d1b3a18be9c4094b34a"
+          }
+        ]
+      }
+    },
+    {
+      "metadata": {
+        "name": "tibcobe-rc-ryiii",
+        "generateName": "tibcobe-rc-",
+        "namespace": "default",
+        "selfLink": "/api/v1/namespaces/default/pods/tibcobe-rc-ryiii",
+        "uid": "80f98759-18ca-11e6-ac8f-0800278925dc",
+        "resourceVersion": "14003",
+        "creationTimestamp": "2016-05-13T05:21:10Z",
+        "labels": {
+          "name": "tibcobe",
+          "tier": "backend",
+          "uses": "tibcobe-service"
+        },
+        "annotations": {
+          "kubernetes.io/created-by": "{\"kind\":\"SerializedReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"ReplicationController\",\"namespace\":\"default\",\"name\":\"tibcobe-rc\",\"uid\":\"6d121b79-18ca-11e6-ac8f-0800278925dc\",\"apiVersion\":\"v1\",\"resourceVersion\":\"9822\"}}\n"
+        }
+      },
+      "spec": {
+        "volumes": [
+          {
+            "name": "beconfig",
+            "hostPath": {
+              "path": "/home/core/be"
+            }
+          },
+          {
+            "name": "default-token-b9e4f",
+            "secret": {
+              "secretName": "default-token-b9e4f"
+            }
+          }
+        ],
+        "containers": [
+          {
+            "name": "k8be",
+            "image": "ddr.tibco.com:5000/businessevents",
+            "ports": [
+              {
+                "containerPort": 7000,
+                "protocol": "TCP"
+              }
+            ],
+            "env": [
+              {
+                "name": "BE_ENGINE_EAR_1",
+                "value": "/data/be/sample.ear"
+              },
+              {
+                "name": "BE_ENGINE_CDD_1",
+                "value": "/data/be/sample.cdd"
+              },
+              {
+                "name": "BE_ENGINE_UNIT_1",
+                "value": "sample-inf"
+              },
+              {
+                "name": "BE_ENGINE_TRA_1",
+                "value": "/data/be/be-engine.tra"
+              },
+              {
+                "name": "BE_ENGINE_JMX_1",
+                "value": "9990"
+              }
+            ],
+            "resources": {},
+            "volumeMounts": [
+              {
+                "name": "beconfig",
+                "mountPath": "/data/be"
+              },
+              {
+                "name": "default-token-b9e4f",
+                "readOnly": true,
+                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
+              }
+            ],
+            "terminationMessagePath": "/dev/termination-log",
+            "imagePullPolicy": "Always"
+          }
+        ],
+        "restartPolicy": "Always",
+        "terminationGracePeriodSeconds": 30,
+        "dnsPolicy": "ClusterFirst",
+        "serviceAccountName": "default",
+        "serviceAccount": "default",
+        "nodeName": "172.17.8.101",
+        "securityContext": {}
+      },
+      "status": {
+        "phase": "Running",
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "False",
+            "lastProbeTime": null,
+            "lastTransitionTime": "2016-05-14T22:41:05Z",
+            "reason": "ContainersNotReady",
+            "message": "containers with unready status: [k8be]"
+          }
+        ],
+        "hostIP": "172.17.8.101",
+        "podIP": "172.18.0.2",
+        "startTime": "2016-05-13T05:21:10Z",
+        "containerStatuses": [
+          {
+            "name": "k8be",
+            "state": {
+              "terminated": {
+                "exitCode": 0,
+                "reason": "Completed",
+                "startedAt": "2016-05-14T22:41:31Z",
+                "finishedAt": "2016-05-14T22:41:31Z",
+                "containerID": "docker://fca0ce8e5f68807476475c55bd3b346c24c6270eb4f2666e9fad36d99aef6e08"
+              }
+            },
+            "lastState": {
+              "terminated": {
+                "exitCode": 0,
+                "reason": "Completed",
+                "startedAt": "2016-05-14T22:41:12Z",
+                "finishedAt": "2016-05-14T22:41:12Z",
+                "containerID": "docker://47e5f3acdfae93716a5cc2d23b9e0f570b39e54343c27b6786a2f3e23aeda119"
+              }
+            },
+            "ready": false,
+            "restartCount": 2,
+            "image": "ddr.tibco.com:5000/businessevents",
+            "imageID": "docker://sha256:48e6bd0642a752cc871eb7f2151f23da719c30654c53dbc8801d0c43b5fae9a2",
+            "containerID": "docker://fca0ce8e5f68807476475c55bd3b346c24c6270eb4f2666e9fad36d99aef6e08"
+          }
+        ]
+      }
+    }
+  ]
+}

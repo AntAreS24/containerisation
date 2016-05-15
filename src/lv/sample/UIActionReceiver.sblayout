@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><application-layout>
+    <component name="UIActionInputStream">
+        <param name="gui:x" value="-569"/>
+        <param name="gui:y" value="-17"/>
+    </component>
+    <component name="DeletePodByNameRef1">
+        <param name="gui:x" value="-107"/>
+        <param name="gui:y" value="-128"/>
+    </component>
+    <component name="SendEventToBERef1">
+        <param name="gui:x" value="-107"/>
+        <param name="gui:y" value="-17"/>
+    </component>
+    <component name="Filter">
+        <param name="gui:x" value="-332"/>
+        <param name="gui:y" value="-17"/>
+    </component>
+    <component name="MapMsgType">
+        <param name="gui:x" value="-216"/>
+        <param name="gui:y" value="-17"/>
+    </component>
+    <component name="MapPodName">
+        <param name="gui:x" value="-216"/>
+        <param name="gui:y" value="-128"/>
+        <param name="gui:bends:1" value="-243,3;-226,-98"/>
+    </component>
+    <component name="OutputAdapter">
+        <param name="gui:x" value="-447"/>
+        <param name="gui:y" value="-17"/>
+    </component>
+    <component name="OutputStream">
+        <param name="gui:x" value="-216"/>
+        <param name="gui:y" value="77"/>
+        <param name="gui:bends:1" value="-254,23;-234,107"/>
+    </component>
+</application-layout>

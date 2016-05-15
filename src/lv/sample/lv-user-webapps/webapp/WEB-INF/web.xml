@@ -27,6 +27,7 @@
 		<init-param>
 			<param-name>TargetUrl</param-name>
 			<param-value>http://172.17.8.100:8080</param-value>
+			<!--param-value>http://localhost:8080</param-value!-->
 		</init-param>
 	</servlet>
 

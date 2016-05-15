@@ -1,0 +1,178 @@
+{
+  "kind": "NodeList",
+  "apiVersion": "v1",
+  "metadata": {
+    "selfLink": "/api/v1/nodes",
+    "resourceVersion": "14072"
+  },
+  "items": [
+    {
+      "metadata": {
+        "name": "172.17.8.101",
+        "selfLink": "/api/v1/nodes/172.17.8.101",
+        "uid": "60cb916a-18ae-11e6-ac8f-0800278925dc",
+        "resourceVersion": "14070",
+        "creationTimestamp": "2016-05-13T01:59:50Z",
+        "labels": {
+          "kubernetes.io/hostname": "172.17.8.101"
+        }
+      },
+      "spec": {
+        "externalID": "172.17.8.101"
+      },
+      "status": {
+        "capacity": {
+          "cpu": "1",
+          "memory": "2053264Ki",
+          "pods": "110"
+        },
+        "allocatable": {
+          "cpu": "1",
+          "memory": "2053264Ki",
+          "pods": "110"
+        },
+        "conditions": [
+          {
+            "type": "OutOfDisk",
+            "status": "False",
+            "lastHeartbeatTime": "2016-05-14T22:42:10Z",
+            "lastTransitionTime": "2016-05-13T01:59:50Z",
+            "reason": "KubeletHasSufficientDisk",
+            "message": "kubelet has sufficient disk space available"
+          },
+          {
+            "type": "Ready",
+            "status": "True",
+            "lastHeartbeatTime": "2016-05-14T22:42:10Z",
+            "lastTransitionTime": "2016-05-14T22:41:10Z",
+            "reason": "KubeletReady",
+            "message": "kubelet is posting ready status"
+          }
+        ],
+        "addresses": [
+          {
+            "type": "LegacyHostIP",
+            "address": "172.17.8.101"
+          },
+          {
+            "type": "InternalIP",
+            "address": "172.17.8.101"
+          }
+        ],
+        "daemonEndpoints": {
+          "kubeletEndpoint": {
+            "Port": 10250
+          }
+        },
+        "nodeInfo": {
+          "machineID": "066a7d0502cb421490b099e7acd0378c",
+          "systemUUID": "9BC2BF33-D26F-46CE-B8E4-1CE95A88F635",
+          "bootID": "948b0b79-6e34-4bc3-961e-5d159ecea4fb",
+          "kernelVersion": "4.5.3-coreos",
+          "osImage": "CoreOS 1045.0.0 (MoreOS)",
+          "containerRuntimeVersion": "docker://1.10.3",
+          "kubeletVersion": "v1.2.2",
+          "kubeProxyVersion": "v1.2.2"
+        },
+        "images": [
+          {
+            "names": [
+              "ddr.tibco.com:5000/businessevents:latest"
+            ],
+            "sizeBytes": 1277426664
+          },
+          {
+            "names": [
+              "gcr.io/google_containers/pause:2.0"
+            ],
+            "sizeBytes": 350164
+          }
+        ]
+      }
+    },
+    {
+      "metadata": {
+        "name": "172.17.8.102",
+        "selfLink": "/api/v1/nodes/172.17.8.102",
+        "uid": "65cfc616-18ae-11e6-ac8f-0800278925dc",
+        "resourceVersion": "14072",
+        "creationTimestamp": "2016-05-13T01:59:59Z",
+        "labels": {
+          "kubernetes.io/hostname": "172.17.8.102"
+        }
+      },
+      "spec": {
+        "externalID": "172.17.8.102"
+      },
+      "status": {
+        "capacity": {
+          "cpu": "1",
+          "memory": "2053264Ki",
+          "pods": "110"
+        },
+        "allocatable": {
+          "cpu": "1",
+          "memory": "2053264Ki",
+          "pods": "110"
+        },
+        "conditions": [
+          {
+            "type": "OutOfDisk",
+            "status": "False",
+            "lastHeartbeatTime": "2016-05-14T22:42:11Z",
+            "lastTransitionTime": "2016-05-14T22:41:31Z",
+            "reason": "KubeletHasSufficientDisk",
+            "message": "kubelet has sufficient disk space available"
+          },
+          {
+            "type": "Ready",
+            "status": "True",
+            "lastHeartbeatTime": "2016-05-14T22:42:11Z",
+            "lastTransitionTime": "2016-05-14T22:41:41Z",
+            "reason": "KubeletReady",
+            "message": "kubelet is posting ready status"
+          }
+        ],
+        "addresses": [
+          {
+            "type": "LegacyHostIP",
+            "address": "172.17.8.102"
+          },
+          {
+            "type": "InternalIP",
+            "address": "172.17.8.102"
+          }
+        ],
+        "daemonEndpoints": {
+          "kubeletEndpoint": {
+            "Port": 10250
+          }
+        },
+        "nodeInfo": {
+          "machineID": "e35b62c05cb54769ab8dcbe040c71f3b",
+          "systemUUID": "EA9ADCEF-4629-4B2D-A958-AE4808A3F87F",
+          "bootID": "b0ccbc25-de05-49ee-9017-fa6dd936ad1f",
+          "kernelVersion": "4.5.3-coreos",
+          "osImage": "CoreOS 1045.0.0 (MoreOS)",
+          "containerRuntimeVersion": "docker://1.10.3",
+          "kubeletVersion": "v1.2.2",
+          "kubeProxyVersion": "v1.2.2"
+        },
+        "images": [
+          {
+            "names": [
+              "ddr.tibco.com:5000/businessevents:latest"
+            ],
+            "sizeBytes": 1277426664
+          },
+          {
+            "names": [
+              "gcr.io/google_containers/pause:2.0"
+            ],
+            "sizeBytes": 350164
+          }
+        ]
+      }
+    }
+  ]
+}
