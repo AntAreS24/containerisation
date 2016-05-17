@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <liveview-configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.streambase.com/schemas/lvconf/">
-  <application filename="UIActionReceiver.sbapp" id="LV_UIAction_GlobalPreProcessor"
-      sub-folder=""/>
+  <application filename="UIActionReceiver.sbapp" id="LV_UIActionReceiver_DataSource" sub-folder=""/>
 </liveview-configuration>

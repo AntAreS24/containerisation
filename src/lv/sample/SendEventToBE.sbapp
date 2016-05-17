@@ -4,25 +4,109 @@
         <annotations>
             <annotation name="hygienic"/>
         </annotations>
+        <import alias="LV_BEResponse" from="Schemas.sbint" item="LV_BEResponse"/>
         <stream name="InputStream">
             <schema>
                 <field name="name" type="string"/>
             </schema>
         </stream>
-        <box name="Map" type="map">
+        <box name="CreateTuple" type="map">
             <input port="1" stream="InputStream"/>
-            <output port="1" stream="out:Map_1"/>
+            <output port="1" stream="out:CreateTuple_1"/>
+            <target-list>
+                <item name="input" selection="all"/>
+                <expressions>
+                    <include field="msg">tuple(name as name, 1 as number, uuid() as serial, now() as starttime)</include>
+                </expressions>
+            </target-list>
+        </box>
+        <box name="Split" type="split">
+            <input port="1" stream="out:CreateTuple_1"/>
+            <output port="1" stream="out:Split_1"/>
+            <output port="2" stream="out:Split_2"/>
+            <param name="output-count" value="2"/>
+        </box>
+        <box name="CreateJMSMessage" type="map">
+            <input port="1" stream="out:Split_1"/>
+            <output port="1" stream="out:CreateJMSMessage_1"/>
             <target-list>
                 <item name="input" selection="none"/>
                 <expressions>
                     <include field="jmsHeader">tuple('Queue---&gt;sample.response' as jmsReplyTo)</include>
-                    <include field="jmsProperties">tuple(name as name, 1 as number)</include>
+                    <include field="jmsProperties">msg</include>
                     <include field="payload">string(null)</include>
                 </expressions>
             </target-list>
         </box>
+        <box name="LVMessage" type="map">
+            <input port="1" stream="out:Split_2"/>
+            <output port="1" stream="out:LVMessage_1"/>
+            <target-list>
+                <item name="input" selection="none"/>
+                <expressions>
+                    <include field="*">LV_BEResponse(msg.serial, msg.name, null, msg.starttime, null).*</include>
+                </expressions>
+            </target-list>
+        </box>
+        <box name="LogJMSSent" type="outputadapter">
+            <input port="1" stream="out:CreateJMSMessage_1"/>
+            <output port="1" stream="out:LogJMSSent_1"/>
+            <param name="start:state" value="true"/>
+            <param name="javaclass" value="com.streambase.sb.adapter.logger.Log"/>
+            <param name="CaptureStrategy" value="FLATTEN"/>
+            <param name="asyncEnabled" value="true"/>
+            <param name="compressFrequentMessages" value="false"/>
+            <param name="compressMaxWindowSize" value="5.0"/>
+            <param name="customFormat" value=""/>
+            <param name="customFormatExpression" value=""/>
+            <param name="customFormatType" value="Basic"/>
+            <param name="emitLoggedTuples" value="true"/>
+            <param name="encodeSubType" value="Map"/>
+            <param name="hexEncodeBlobs" value="false"/>
+            <param name="includeNullFields" value="false"/>
+            <param name="logLevel" value="Info"/>
+            <param name="logLevelOverrideFieldName" value=""/>
+            <param name="loggerFormatType" value="JSON"/>
+            <param name="messageIdentifier" value="JMS Send"/>
+            <param name="messageIdentifierExpression" value=""/>
+            <param name="messageIdentifierType" value="Basic"/>
+            <param name="messagePrefix" value=""/>
+            <param name="quoteNullStrings" value="true"/>
+            <param name="timestampAsLong" value="false"/>
+            <param name="timestampFormat" value="yyyy-MM-dd HH:mm:ss.SSSZ"/>
+            <param name="verbose" value="false"/>
+        </box>
+        <box name="LogLVSent" type="outputadapter">
+            <input port="1" stream="out:LVMessage_1"/>
+            <output port="1" stream="OutputStream"/>
+            <param name="start:state" value="true"/>
+            <param name="javaclass" value="com.streambase.sb.adapter.logger.Log"/>
+            <param name="CaptureStrategy" value="FLATTEN"/>
+            <param name="asyncEnabled" value="true"/>
+            <param name="compressFrequentMessages" value="false"/>
+            <param name="compressMaxWindowSize" value="5.0"/>
+            <param name="customFormat" value=""/>
+            <param name="customFormatExpression" value=""/>
+            <param name="customFormatType" value="Basic"/>
+            <param name="emitLoggedTuples" value="true"/>
+            <param name="encodeSubType" value="Map"/>
+            <param name="hexEncodeBlobs" value="false"/>
+            <param name="includeNullFields" value="false"/>
+            <param name="logLevel" value="Info"/>
+            <param name="logLevelOverrideFieldName" value=""/>
+            <param name="loggerFormatType" value="JSON"/>
+            <param name="messageIdentifier" value="LV Message Send"/>
+            <param name="messageIdentifierExpression" value=""/>
+            <param name="messageIdentifierType" value="Basic"/>
+            <param name="messagePrefix" value=""/>
+            <param name="quoteNullStrings" value="true"/>
+            <param name="timestampAsLong" value="false"/>
+            <param name="timestampFormat" value="yyyy-MM-dd HH:mm:ss.SSSZ"/>
+            <param name="verbose" value="false"/>
+        </box>
+        <output-stream name="OutputStream" schema="LV_BEResponse"/>
         <box name="SendEMSMessage" type="java">
-            <input port="1" stream="out:Map_1"/>
+            <input port="1" stream="out:LogJMSSent_1"/>
             <param name="start:state" value="true"/>
             <param name="javaclass" value="com.streambase.sb.adapter.jms2.EMSProducer"/>
             <param name="connectOnStartup" value="true"/>

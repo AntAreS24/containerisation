@@ -37,7 +37,11 @@ rule Rules.BusyProcessing {
 		
 		Events.TriggerProcessingResponse response = Events.TriggerProcessingResponse.TriggerProcessingResponse(
 			null /*extId String */,
-			"{test: 'body'}" /*payload String */,
+			"{id: '"+event.serial+"', response: 200}" /*payload String */,
+			event.name /*name String */,
+			event.number /*number int */,
+			event.serial /*serial String */,
+			event.starttime /*starttime String */,
 			"Processed A LOT Successfully"/*processingresponse String */,
 			""/*message String */,
 			200/*code int */);

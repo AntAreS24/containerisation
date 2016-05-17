@@ -1,14 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?><application-layout>
     <component name="InputStream">
-        <param name="gui:x" value="-435"/>
-        <param name="gui:y" value="-121"/>
+        <param name="gui:x" value="-590"/>
+        <param name="gui:y" value="-6"/>
     </component>
-    <component name="Map">
-        <param name="gui:x" value="-353"/>
-        <param name="gui:y" value="-121"/>
+    <component name="CreateJMSMessage">
+        <param name="gui:x" value="-311"/>
+        <param name="gui:y" value="-61"/>
+        <param name="gui:bends:1" value="-343,14;-333,-31"/>
+    </component>
+    <component name="CreateTuple">
+        <param name="gui:x" value="-510"/>
+        <param name="gui:y" value="-6"/>
+    </component>
+    <component name="LVMessage">
+        <param name="gui:x" value="-311"/>
+        <param name="gui:y" value="50"/>
+        <param name="gui:bends:1" value="-356,34;-346,80"/>
+    </component>
+    <component name="LogJMSSent">
+        <param name="gui:x" value="-188"/>
+        <param name="gui:y" value="-61"/>
+    </component>
+    <component name="LogLVSent">
+        <param name="gui:x" value="-188"/>
+        <param name="gui:y" value="50"/>
     </component>
     <component name="SendEMSMessage">
-        <param name="gui:x" value="-256"/>
-        <param name="gui:y" value="-121"/>
+        <param name="gui:x" value="-90"/>
+        <param name="gui:y" value="-61"/>
+    </component>
+    <component name="Split">
+        <param name="gui:x" value="-428"/>
+        <param name="gui:y" value="-6"/>
+    </component>
+    <component name="OutputStream">
+        <param name="gui:x" value="-90"/>
+        <param name="gui:y" value="50"/>
     </component>
 </application-layout>

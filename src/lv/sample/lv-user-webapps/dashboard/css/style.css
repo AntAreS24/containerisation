@@ -53,24 +53,15 @@
   height: 42px;
 }
 
-.navbar {
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  background-color: #447AE8;
-  border: 0px;
-  border-radius: 0;
-}
 
-.nodesbar {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 60px;
-    height: 200px;
-    background-color: light-grey;
-    border-bottom: thick solid black;
+.navbar {
+  background-color: #447AE8;
+}
+.navbar-brand{
+	height: 70px;
+}
+.navbar-brand>img{
+	display: inline;
 }
 
 .not_ready {

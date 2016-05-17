@@ -245,7 +245,7 @@ var makeGroupOrder = function () {
 
 var renderNodes = function () {
 	var y = 25;
-	var x = 100;
+	var x = 50;
 	$.each(nodes.items, function (index, value) {
 		if(debugQueryResult){console.log(value);}
 		var div = $('<div/>');
@@ -256,15 +256,14 @@ var renderNodes = function () {
 			}
 		});
 
-		var eltDiv = $('<div class="window node ' + ready + '" title="' + value.metadata.name + '" id="node-' + value.metadata.name +
-				'" style="left: ' + (x + 250) + '; top: ' + y + '"/>');
+		var eltDiv = $('<div class="window node ' + ready + '" title="' + value.metadata.name + '" id="node-' + value.metadata.name +'" style="left: ' + (x) + '"/>');
 		eltDiv.html('<span><b>Node</b><br/><br/>' +
 			//truncate(value.metadata.name, 6) +
 			value.metadata.name +
 			'</span>');
 		div.append(eltDiv);
 
-		var elt = $('.nodesbar');
+		var elt = $('#nodesbar');
 		elt.append(div);
 
 		x += 120;
@@ -317,7 +316,7 @@ var renderGroups = function () {
 				counts[key] = key in counts ? counts[key] + 1 : 0;
 				//eltDiv = $('<div class="window wide controller" title="' + value.metadata.name + '" id="controller-' + value.metadata.name +
 				//	'" style="left: ' + (900 + counts[key] * 100) + '; top: ' + (y + 100 + counts[key] * 100) + '"/>');
-				var minLeft = 900;
+				var minLeft = 500;
 				var calcLeft = 400 + (value.status.replicas * 130);
 				var left = minLeft > calcLeft ? minLeft : calcLeft;
 				eltDiv = $('<div class="window wide controller" title="' + value.metadata.name + '" id="controller-' + value.metadata.name +
@@ -462,18 +461,99 @@ function populatePodList(){
 
 var serverURI = 'sb://localhost:10000';
 var lvConnection;
+var tuples = {};
 LiveView.connect({url: '/lv/client/'}).then(
 	function(connection){
 		lvConnection = connection;
+		connection.subscribe(
+			new LiveView.Query('SELECT * FROM LV_BEResponse'),
+			{
+				onInsert: function(result){
+					var tuple = {
+						id: result.tuple.id,
+						message: result.tuple.fieldMap.message,
+						response: result.tuple.fieldMap.response,
+						sentTimestamp: result.tuple.fieldMap.sentTimestamp,
+						receivedTimestamp: result.tuple.fieldMap.receivedTimestamp
+					};
+					tuples[result.tuple.id] = tuple;
+					var time = "Pending...";
+					if(result.tuple.fieldMap.sentTimestamp !== undefined && result.tuple.fieldMap.sentTimestamp !== null){
+						if(result.tuple.fieldMap.receivedTimestamp !== undefined && result.tuple.fieldMap.receivedTimestamp !== null){
+							time = result.tuple.fieldMap.receivedTimestamp - result.tuple.fieldMap.sentTimestamp;
+							
+						}else{
+							
+						}
+					}
+					tuple.time = time;
+					
+					$('<tr id="'+result.tuple.id+'">').append(
+						$('<td>').text(tuple.id), //id
+						$('<td>').text(tuple.message), // message
+						$('<td>').text(tuple.response), // response
+						$('<td>').text(tuple.time) // time
+					).prependTo('#tablemessagebody');
+				},
+				onUpdate: function(result){
+					var tuple = tuples[result.tuple.id];
+					if(tuple === undefined){
+						tuple = {
+							id: result.tuple.id,
+							message: result.tuple.fieldMap.message,
+							response: result.tuple.fieldMap.response,
+							sentTimestamp: result.tuple.fieldMap.sentTimestamp,
+							receivedTimestamp: result.tuple.fieldMap.receivedTimestamp
+						};
+						tuples[result.tuple.id] = tuple;
+					}else{
+						if(result.tuple.fieldMap.message !== undefined){
+							tuple.message = result.tuple.fieldMap.message;
+						}
+						if(result.tuple.fieldMap.response !== undefined){
+							tuple.response = result.tuple.fieldMap.response;
+						}
+						if(result.tuple.fieldMap.sentTimestamp !== undefined){
+							tuple.sentTimestamp = result.tuple.fieldMap.sentTimestamp;
+						}
+						if(result.tuple.fieldMap.receivedTimestamp !== undefined){
+							tuple.receivedTimestamp = result.tuple.fieldMap.receivedTimestamp;
+						}
+					}
+					var time = "Pending...";
+					if(result.tuple.fieldMap.sentTimestamp !== undefined && result.tuple.fieldMap.sentTimestamp !== null){
+						if(result.tuple.fieldMap.receivedTimestamp !== undefined && result.tuple.fieldMap.receivedTimestamp !== null){
+							time = result.tuple.fieldMap.receivedTimestamp - result.tuple.fieldMap.sentTimestamp;	
+						}
+					}else{
+						if(result.tuple.fieldMap.receivedTimestamp !== undefined && result.tuple.fieldMap.receivedTimestamp !== null){
+							time = result.tuple.fieldMap.receivedTimestamp - tuple.sentTimestamp;
+						}
+					}
+					tuple.time = time;
+					$('tr#'+result.tuple.id).replaceWith($('<tr id="'+result.tuple.id+'">').append(
+						$('<td>').text(tuple.id), //id
+						$('<td>').text(tuple.message), // message
+						$('<td>').text(tuple.response), // response
+						$('<td>').text(tuple.time) // time
+					));
+				},
+				onDelete: function(result){
+					$('tr#'+result.tuple.id).remove();
+				}
+			}
+		);
 	}
 );
 
+var containerName = "LV_UIActionReceiver_DataSource";
+var inputStreamName = "UIActionInputStream";
 
 $(document).ready(function() {
     $("#btnSubmitComplexMessage").click(function(e){
         if(lvConnection !== undefined && lvConnection !== null){
 			console.log('Send Action "send" for "busy" message');
-			lvConnection.sendTuple({"action":"send", "params":"simple"}, "LV_UIAction_GlobalPreProcessor.UIActionInputStream", null, {serverUri:serverURI});
+			lvConnection.sendTuple({"action":"send", "params":"busy"}, containerName+"."+inputStreamName, null, {serverUri:serverURI});
 		}
 		e.preventDefault();
     }); 
@@ -481,7 +561,7 @@ $(document).ready(function() {
     $("#btnSubmitSimpleMessage").click(function(e){
         if(lvConnection !== undefined && lvConnection !== null){
 			console.log('Send Action "send" for "simple" message');
-			lvConnection.sendTuple({"action":"send", "params":"simple"}, "LV_UIAction_GlobalPreProcessor.UIActionInputStream", null, {serverUri:serverURI});
+			lvConnection.sendTuple({"action":"send", "params":"simple"}, containerName+"."+inputStreamName, null, {serverUri:serverURI});
 		}
 		e.preventDefault();
     }); 
@@ -490,8 +570,8 @@ $(document).ready(function() {
         if(lvConnection !== undefined && lvConnection !== null){
 			var podName = $('#podlist').val();
 			console.log('Send Action "delete" for "'+podName+'" message');
-			lvConnection.sendTuple({"action":"delete", "params":podName}, "LV_UIAction_GlobalPreProcessor.UIActionInputStream", null, {serverUri:serverURI});
+			lvConnection.sendTuple({"action":"delete", "params":podName}, containerName+"."+inputStreamName, null, {serverUri:serverURI});
 		}
 		e.preventDefault();
-    }); 
+    });
 });

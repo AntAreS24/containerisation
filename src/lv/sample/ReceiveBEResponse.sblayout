@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?><application-layout>
+    <component name="Log">
+        <param name="gui:x" value="-271"/>
+        <param name="gui:y" value="53"/>
+    </component>
+    <component name="Map">
+        <param name="gui:x" value="-166"/>
+        <param name="gui:y" value="53"/>
+    </component>
     <component name="ReceiveBEResponse">
-        <param name="gui:x" value="-295"/>
-        <param name="gui:y" value="6"/>
+        <param name="gui:x" value="-372"/>
+        <param name="gui:y" value="53"/>
     </component>
     <component name="OutputStream">
-        <param name="gui:x" value="-176"/>
-        <param name="gui:y" value="6"/>
+        <param name="gui:x" value="-89"/>
+        <param name="gui:y" value="53"/>
     </component>
 </application-layout>

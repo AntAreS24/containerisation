@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<liveview-configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.streambase.com/schemas/lvconf/">
+  <data-table id="LV_BEResponse">
+    <import-schema from="Schemas.sbint" schema="LV_BEResponse"/>
+    <primary-key>
+      <field ref="id"/>
+    </primary-key>
+    <data-sources>
+      <data-source>
+        <application application-ref="LV_ReceiveBEResponse_Datasource" output-stream="OutputStream"/>
+      </data-source>
+      <data-source>
+        <application application-ref="LV_UIActionReceiver_DataSource" output-stream="OutputStream"/>
+      </data-source>
+      <data-source>
+        <application application-ref="LV_BEResponse_TrimmerDataSource" output-stream="LV_BEResponse_TrimOutputStream"/>
+      </data-source>
+    </data-sources>
+  </data-table>
+</liveview-configuration>

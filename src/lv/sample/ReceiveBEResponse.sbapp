@@ -4,8 +4,9 @@
         <annotations>
             <annotation name="hygienic"/>
         </annotations>
+        <import alias="LV_BEResponse" from="Schemas.sbint" item="LV_BEResponse"/>
         <box name="ReceiveBEResponse" type="java">
-            <output port="1" stream="OutputStream"/>
+            <output port="1" stream="out:ReceiveBEResponse_1"/>
             <param name="start:state" value="true"/>
             <param name="javaclass" value="com.streambase.sb.adapter.jms2.EMSConsumer"/>
             <param name="connectOnStartup" value="true"/>
@@ -13,11 +14,49 @@
             <param name="destinationType" value="Preconfigured"/>
             <param name="enableStatusPort" value="false"/>
             <param name="jmsBodySchema" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;schema/&gt;&#13;&#10;"/>
-            <param name="jmsPropertiesSchema" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;schema/&gt;&#13;&#10;"/>
+            <param name="jmsPropertiesSchema" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;schema&gt;&#13;&#10;    &lt;field name=&quot;name&quot; type=&quot;string&quot;/&gt;&#13;&#10;    &lt;field name=&quot;number&quot; type=&quot;int&quot;/&gt;&#13;&#10;    &lt;field name=&quot;serial&quot; type=&quot;string&quot;/&gt;&#13;&#10;    &lt;field name=&quot;starttime&quot; type=&quot;timestamp&quot;/&gt;&#13;&#10;    &lt;field name=&quot;processingresponse&quot; type=&quot;string&quot;/&gt;&#13;&#10;    &lt;field name=&quot;message&quot; type=&quot;string&quot;/&gt;&#13;&#10;    &lt;field name=&quot;code&quot; type=&quot;int&quot;/&gt;&#13;&#10;&lt;/schema&gt;&#13;&#10;"/>
             <param name="logLevel" value="INFO"/>
             <param name="maxMsgsInFlight" value=""/>
             <param name="serverName" value="EMSLocal"/>
         </box>
-        <output-stream name="OutputStream"/>
+        <box name="Log" type="outputadapter">
+            <input port="1" stream="out:ReceiveBEResponse_1"/>
+            <output port="1" stream="out:Log_1"/>
+            <param name="start:state" value="true"/>
+            <param name="javaclass" value="com.streambase.sb.adapter.logger.Log"/>
+            <param name="CaptureStrategy" value="FLATTEN"/>
+            <param name="asyncEnabled" value="true"/>
+            <param name="compressFrequentMessages" value="false"/>
+            <param name="compressMaxWindowSize" value="5.0"/>
+            <param name="customFormat" value=""/>
+            <param name="customFormatExpression" value=""/>
+            <param name="customFormatType" value="Basic"/>
+            <param name="emitLoggedTuples" value="true"/>
+            <param name="encodeSubType" value="Map"/>
+            <param name="hexEncodeBlobs" value="false"/>
+            <param name="includeNullFields" value="false"/>
+            <param name="logLevel" value="Info"/>
+            <param name="logLevelOverrideFieldName" value=""/>
+            <param name="loggerFormatType" value="JSON"/>
+            <param name="messageIdentifier" value="BE Received"/>
+            <param name="messageIdentifierExpression" value=""/>
+            <param name="messageIdentifierType" value="Basic"/>
+            <param name="messagePrefix" value=""/>
+            <param name="quoteNullStrings" value="true"/>
+            <param name="timestampAsLong" value="false"/>
+            <param name="timestampFormat" value="yyyy-MM-dd HH:mm:ss.SSSZ"/>
+            <param name="verbose" value="false"/>
+        </box>
+        <box name="Map" type="map">
+            <input port="1" stream="out:Log_1"/>
+            <output port="1" stream="OutputStream"/>
+            <target-list>
+                <item name="input" selection="none"/>
+                <expressions>
+                    <include field="*">LV_BEResponse(jmsProperties.serial, jmsProperties.name, jmsProperties.processingresponse, jmsProperties.starttime, now()).*</include>
+                </expressions>
+            </target-list>
+        </box>
+        <output-stream name="OutputStream" schema="LV_BEResponse" scope="public"/>
     </add>
 </modify>

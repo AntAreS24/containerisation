@@ -15,40 +15,96 @@ limitations under the License.
 -->
 <html>
   <head>
- 	<!-- LiveView JS API required Libraries -->
-	<script src="/lv/api/lib/jquery.min.js"></script>
-	<script src="/lv/api/lib/jquery.atmosphere.min.js"></script>
-	<script src="/lv/api/liveview.js"></script>
-	<script src="libs/jquery-ui/jquery-ui.min.js"></script>
-    <script src="libs/jsplumb/jquery.jsPlumb-1.6.4.js"></script>
-    <link rel="stylesheet" href="libs/jsplumb/jsplumb.css">
-    <link rel="stylesheet" href="libs/jsplumb/flowchart-style.css">
-	<link rel="stylesheet" href="libs/font-awesome-4.6.2/css/font-awesome.min.css">
-
-    <script src="js/script.js"></script>
-    <link rel="stylesheet" href="css/style.css">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<title>TIBCO Now Demo - Kubernetes</title>
+    <link rel="stylesheet" type="text/css" href="libs/jsplumb/jsplumb.css" />
+    <link rel="stylesheet" type="text/css" href="libs/jsplumb/flowchart-style.css" />
+    <link rel="stylesheet" type="text/css" href="libs/font-awesome-4.6.2/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <title></title>
   </head>
-<body>
-	<div id="main">
-		<div class="navbar">
-			<div class="navbar-logo">
-				<img src="img/tibco_logo-2x.png" id="nav-logo-img" alt="logo">
-				<img src="img/Love_Heart_SVG.svg" id="nav-logo-img" alt="logo">
-				<img src="img/logotext.svg" id="nav-logo-img" alt="logo">
-				<div class="navbar-button">
-					<input id="btnSubmitComplexMessage" type="submit" value="Send Complex Message"/>
-					<input id="btnSubmitSimpleMessage" type="submit" value="Send Simple Message"/>
-					<span id="poddeletelist">
-					</span>
-					<input id="btnSubmitDeletePod" type="submit" value="Delete Selected Pod"/>
-					
+  <body>
+	  <nav class="navbar navbar-default">
+		<div class="container-fluid">
+		  <!-- Brand and toggle get grouped for better mobile display -->
+		  <div class="navbar-header">
+		  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+		  aria-expanded="false">
+			<span class="sr-only">Toggle navigation</span>
+		  </button> 
+		  <a class="navbar-brand" href="#">
+			<img src="img/tibco_logo-2x.png" id="nav-logo-img" alt="TIBCO" /> 
+			<img src="img/Love_Heart_SVG.svg" id="nav-logo-img" alt="Loves" style="padding-left: 20px; padding-right:20px"/> 
+			<img src="img/vagrant.png" id="nav-logo-img" alt="Vagrant" />
+			<span style="color: white; font-size: 35">+</span>
+			<img src="img/logotext.svg" id="nav-logo-img" alt="Kubernetes" />
+		  </a></div>
+		  
+		  <!-- Collect the nav links, forms, and other content for toggling -->
+		  <div class="collapse navbar-collapse pull-right" id="bs-example-navbar-collapse-1">
+			<button type="button" class="btn btn-default navbar-btn" id="btnSubmitComplexMessage">Send Complex Message</button>
+			<button type="button" class="btn btn-default navbar-btn" id="btnSubmitSimpleMessage">Send Simple Message</button>
+			<span id="poddeletelist"></span> 
+			<button type="button" class="btn btn-default navbar-btn" id="btnSubmitDeletePod">Delete Selected Pod</button>
+		  </div>
+		  <!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container-fluid -->
+	  </nav>
+	  <div class="container-fluid">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">Nodes</div>
+							<div class="panel-body">
+								<div id="nodesbar" style="height: 110px">
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel panel-default">
+							<div class="panel-body">
+								<div id="sheet" style="height: 400px"></div>
+							</div>
+						</div>					
+					</div>
+				</div>
+				
+			</div>
+			<div class="col-md-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">Messages</div>
+					<div class="panel-body">
+						<table class="table table-condensed table-bordered table-hover table-row">
+							<thead>
+								<th>id</th>
+								<th>message</th>
+								<th>response</th>
+								<th>time (ms)</th>
+							</thead>
+							<tbody id="tablemessagebody">
+							</tbody>
+						</table>
+					</div>
+				</div>	
 			</div>
 		</div>
-		<div class="nodesbar">
-		</div>
-		<div class="demo flowchart-demo" id="sheet">
-		</div>
-	</div>
-</body>
+	  </div>
+  <!--
+    
+  </div>
+  -->
+  <!-- LiveView JS API required Libraries -->
+  <script src="/lv/api/lib/jquery.min.js"></script> 
+  <script src="/lv/api/lib/jquery.atmosphere.min.js"></script> 
+  <script src="/lv/api/liveview.js"></script> 
+  <script src="libs/jquery-ui/jquery-ui.min.js"></script> 
+  <script src="libs/jsplumb/jquery.jsPlumb-1.6.4.js"></script> 
+  <script src="js/script.js"></script></body>
 </html>

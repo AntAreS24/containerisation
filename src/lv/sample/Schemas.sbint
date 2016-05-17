@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<application version="7.6.2">
+    <annotations>
+        <annotation name="hygienic"/>
+    </annotations>
+    <named-schemas>
+        <schema name="LV_BEResponse">
+            <field name="id" type="string"/>
+            <field name="message" type="string"/>
+            <field name="response" type="string"/>
+            <field name="sentTimestamp" type="timestamp"/>
+            <field name="receivedTimestamp" type="timestamp"/>
+        </schema>
+        <schema name="LV_DataInBaseSchema">
+            <field name="PublisherID" type="string"/>
+            <field name="PublisherSN" type="long"/>
+            <field name="CQSReferredCount" type="long"/>
+            <field name="CQSDataUpdatePredicate" type="string"/>
+            <field name="CQSDelete" type="bool"/>
+        </schema>
+    </named-schemas>
+</application>

@@ -2,6 +2,8 @@
 <event:SimpleEvent xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:event="http:///com/tibco/cep/designtime/core/model/event" namespace="/Events/" folder="/Events/" name="TriggerProcessing" description="" GUID="84AADAAF-D343-B2A1-8F39-52076EA9C970" ownerProjectName="sample" superEventPath="" ttlUnits="Seconds" channelURI="/Channels/HTTPChannel" destinationName="trigger_processing">
   <properties name="name" ownerProjectName="sample" ownerPath="/Events/TriggerProcessing"/>
   <properties name="number" ownerProjectName="sample" type="int" ownerPath="/Events/TriggerProcessing"/>
+  <properties name="serial" ownerProjectName="sample" ownerPath="/Events/TriggerProcessing"/>
+  <properties name="starttime" ownerProjectName="sample" type="long" ownerPath="/Events/TriggerProcessing"/>
   <expiryAction name="TriggerProcessing_expiryAction" ownerProjectName="sample" actionText="" conditionText="">
     <symbols>
       <symbolList idName="triggerprocessing" type="/Events/TriggerProcessing"/>
