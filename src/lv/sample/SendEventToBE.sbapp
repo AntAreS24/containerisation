@@ -16,7 +16,7 @@
             <target-list>
                 <item name="input" selection="all"/>
                 <expressions>
-                    <include field="msg">tuple(name as name, 1 as number, uuid() as serial, now() as starttime)</include>
+                    <include field="msg">tuple(name as name, 30 as number, uuid() as serial, now() as starttime)</include>
                 </expressions>
             </target-list>
         </box>

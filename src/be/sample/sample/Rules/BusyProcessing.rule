@@ -19,7 +19,7 @@ rule Rules.BusyProcessing {
 		Log.log(logger, "INFO", "Starting the BUSY processing...");
 		boolean continueLoop = true;
 		long startTime = System.currentTimeMillis();
-		long expectedEndTime = startTime + (event.number*1000*60);
+		long expectedEndTime = startTime + (event.number*1000);
 		while(continueLoop){
 			if(System.currentTimeMillis() < expectedEndTime){
 				// WARNING!!!!!
@@ -43,8 +43,10 @@ rule Rules.BusyProcessing {
 			event.serial /*serial String */,
 			event.starttime /*starttime String */,
 			"Processed A LOT Successfully"/*processingresponse String */,
-			""/*message String */,
+			event.name /*message String */,
 			200/*code int */);
-		Event.replyEvent(event, response); 
+		Event.replyEvent(event, response);
+		
+		Event.consumeEvent(event); 
 	}
 }

@@ -2,7 +2,7 @@
  * @description 
  * @author beamiot-W530
  */
-rule Rules.NormalProcessing {
+rule Rules.KillEngineProcessing {
 	attribute {
 		priority = 5;
 		forwardChain = true;
@@ -11,12 +11,14 @@ rule Rules.NormalProcessing {
 		Events.TriggerProcessing event;
 	}
 	when {
-		event.name != "busy" && event.name != "kill";
+		event.name == "kill";
 	}
 	then {
-		Object logger = Log.getLogger("Rules.NormalProcessing");
+		Object logger = Log.getLogger("Rules.KillEngineProcessing");
 		
-		Log.log(logger, "INFO", "Starting the normal processing...");
+		Log.log(logger, "INFO", "Shutting down the engine...");
+		
+		Engine.shutdown(false);
 		
 		Events.TriggerProcessingResponse response = Events.TriggerProcessingResponse.TriggerProcessingResponse(
 			null /*extId String */,
@@ -25,11 +27,11 @@ rule Rules.NormalProcessing {
 			event.number /*number int */,
 			event.serial /*serial String */,
 			event.starttime /*starttime String */,
-			"Processed Successfully"/*processingresponse String */,
+			"Shutting down started!"/*processingresponse String */,
 			event.name /*message String */,
 			200/*code int */);
-		Event.replyEvent(event, response);
+		Event.replyEvent(event, response); 
 		
-		Event.consumeEvent(event);	
+		Event.consumeEvent(event);
 	}
 }

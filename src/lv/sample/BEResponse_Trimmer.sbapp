@@ -19,7 +19,7 @@
                 <expressions>
                     <include field="QueryName">"Entries Older than 5min"</include>
                     <include field="Select">"*"</include>
-                    <include field="Query">"sentTimestamp &lt; now() - minutes(5)"</include>
+                    <include field="Query">"sentTimestamp &lt; now() - minutes(2)"</include>
                     <include field="SnapshotOnly">true</include>
                     <include field="Unregister">false</include>
                 </expressions>
